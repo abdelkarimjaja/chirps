@@ -1,0 +1,28 @@
+me: Laravel CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: composer install --no-progress
+      - name: Run Tests
+        run: php artisan test
+
+- name: Deploy to Production
+if: github.ref == 'refs/heads/master'
+uses: appleboy/ssh-action@master
+with:
+  host: ${{ secrets.DEPLOY_SERVER }}
+  username: ${{ secrets.DEPLOY_USER }}
+  password: ${{ secrets.DEPLOY_PASSWORD }}
+  script: | 
+    cd /var/www/chirper
+    git pull origin master
+    composer install --no-dev --optimize-autoloader
+    php artisan migrate --force
