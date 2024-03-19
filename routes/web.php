@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/bla', function () {
     return view('welcome');
 });
 
@@ -34,3 +34,9 @@ Route::resource('chirps', ChirpController::class)
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
+
+
+Route::resource('posts', App\Http\Controllers\PostController::class)->only('index', 'store');
+
+
+Route::resource('posts', App\Http\Controllers\PostController::class)->only('index', 'store');
